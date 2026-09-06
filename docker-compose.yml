@@ -13,13 +13,13 @@ services:
       - NODE_ENV=production
       - GEMINI_API_KEY=${GEMINI_API_KEY}
       - APP_URL=http://localhost:3000
-      # PostgreSQL RDS Connection
-      - PGHOST=${PGHOST}
+      # PostgreSQL Connection (Defaults to local docker network service)
+      - PGHOST=${PGHOST:-pulsestream-postgres}
       - PGPORT=${PGPORT:-5432}
       - PGDATABASE=${PGDATABASE:-healthcare}
       - PGUSER=${PGUSER:-postgres}
-      - PGPASSWORD=${PGPASSWORD}
-      - PGSSL=${PGSSL:-true}
+      - PGPASSWORD=${PGPASSWORD:-postgres}
+      - PGSSL=${PGSSL:-false}
       # Databricks Configuration
       - DATABRICKS_HOST=${DATABRICKS_HOST}
       - DATABRICKS_TOKEN=${DATABRICKS_TOKEN}
@@ -28,7 +28,7 @@ services:
       - DATABRICKS_SCHEMA=${DATABRICKS_SCHEMA:-default}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"]
+      test: [ "CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))" ]
       interval: 30s
       timeout: 5s
       retries: 3
