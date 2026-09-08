@@ -29,6 +29,7 @@ interface DashboardLayoutProps {
   redFlagCount?: number;
   pendingAICount?: number;
   onStartNewCase?: () => void;
+  onSwitchToPatientPortal?: () => void;
   children: React.ReactNode;
 }
 
@@ -40,6 +41,7 @@ export default function DashboardLayout({
   redFlagCount = 0,
   pendingAICount = 0,
   onStartNewCase,
+  onSwitchToPatientPortal,
   children
 }: DashboardLayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -113,6 +115,18 @@ export default function DashboardLayout({
                 >
                   <PlusCircle className="h-4 w-4" />
                   <span>+ Start New Patient Case</span>
+                </button>
+              )}
+
+              {onSwitchToPatientPortal && (
+                <button
+                  type="button"
+                  onClick={onSwitchToPatientPortal}
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+                  title="Switch view to Patient Intake Dashboard"
+                >
+                  <span>🏥 Patient Kiosk</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
                 </button>
               )}
             </div>
@@ -286,6 +300,19 @@ export default function DashboardLayout({
               >
                 <PlusCircle className="h-4 w-4" />
                 <span>+ Start New Patient Case</span>
+              </button>
+            </div>
+          )}
+
+          {onSwitchToPatientPortal && (
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={onSwitchToPatientPortal}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-bold transition-colors cursor-pointer"
+              >
+                <span>🏥 Patient Kiosk Dashboard</span>
+                <ExternalLink className="h-3.5 w-3.5" />
               </button>
             </div>
           )}

@@ -6,9 +6,10 @@ interface LoginProps {
   onLogin: (username: string, password: string) => void;
   errorMsg: string | null;
   loading: boolean;
+  onSwitchToPatientLogin?: () => void;
 }
 
-export default function Login({ onLogin, errorMsg, loading }: LoginProps) {
+export default function Login({ onLogin, errorMsg, loading, onSwitchToPatientLogin }: LoginProps) {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('admin123');
 
@@ -76,6 +77,18 @@ export default function Login({ onLogin, errorMsg, loading }: LoginProps) {
         {/* Right Side: Form and credentials picker */}
         <div className="md:w-7/12 p-8 flex flex-col justify-center bg-white">
           <div className="max-w-md w-full mx-auto">
+            {onSwitchToPatientLogin && (
+              <div className="mb-4">
+                <button
+                  type="button"
+                  onClick={onSwitchToPatientLogin}
+                  className="w-full py-2.5 px-3 rounded-none bg-[#F0EFEC] hover:bg-[#0066FF] hover:text-white border border-[#141414] text-[#141414] text-xs font-mono font-bold uppercase transition-all flex items-center justify-center gap-2 cursor-pointer shadow-none"
+                >
+                  <span>🏥 Switch to Patient Kiosk Experience →</span>
+                </button>
+              </div>
+            )}
+
             <div className="mb-6 border-b border-[#141414]/10 pb-4">
               <h2 className="text-2xl font-black text-[#141414] tracking-tighter uppercase">Access Simulation Core</h2>
               <p className="text-[#141414]/65 text-xs font-mono uppercase mt-1">Authenticate using pre-configured role profiles.</p>
