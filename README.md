@@ -178,7 +178,6 @@ MediKiosk aims to:
 
 
 
-```
 ````markdown
 ## 🚀 How to Run
 
@@ -245,4 +244,4 @@ http://localhost:3000
 docker compose down
 ```
 
-```
+
