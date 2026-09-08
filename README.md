@@ -1,120 +1,177 @@
-# PulseStream Healthcare Analytics Simulation Platform
 
-Welcome to the **PulseStream Healthcare Analytics Simulation Platform**, a production-quality, high-throughput dataset synthesizer designed explicitly for data engineering pipelines, ETL benchmarks, Databricks experiments, and Medallion Lakehouse architectures.
+# MediKiosk — Exact Project Summary
 
-This platform continuously generates realistic, synthetic, operational hospital network data (patients, doctors, clinical appointments, and financials) to demonstrate dynamic data ingestion and downstream aggregates.
+### 1. One-Line Description
 
----
+> MediKiosk is an AI-assisted healthcare platform that collects patient clinical history through conversational voice/touch interactions, organizes medical documents, generates a structured clinical summary, and enables physicians to review and verify the information before consultation.
 
-## 🚀 Architectural Design & Ingestion Flow
 
-```
-                      [ PulseStream Generator Engine ]
-               (Continuous Multi-Cadence Synthetic Operations)
-                                     │
-      ┌──────────────────────────────┼──────────────────────────────┐
-      ▼                              ▼                              ▼
- [ patients.csv ]            [ appointments.csv ]          [ transactions.csv ]
- (Raw Demographics)          (Roster & Durations)          (Insured Billing Ledger)
-      │                              │                              │
-      └──────────────────────────────┼──────────────────────────────┘
-                                     ▼
-                      [ Databricks Bronze Layer ]
-                  (Append-Only Raw Parquet Delta Tables)
-                                     │
-                                     ▼
-                      [ Databricks Silver Layer ]
-                (Cleaned, Deduplicated, Validated Dimension)
-                                     │
-                                     ▼
-                       [ Databricks Gold Layer ]
-                  (Semantic Materialized Business Views)
-```
+### 2. Proposed Solution
 
----
-
-## 🔑 Pre-Configured Console Access Credentials
-
-PulseStream features full **Role-Based Access Control (RBAC)**. Log in as any of the following users to explore custom dashboards and data pools tailored to their corporate mandates:
-
-| Username | Password | Role / Access Levels | Use Cases Covered |
-| :--- | :--- | :--- | :--- |
-| **`admin`** | `admin123` | **Admin** / Full Control | Configuration of simulator speed (Pause, Live, 10x, 50x), manual burst generation, database wipes and seed resets. |
-| **`doctor`** | `doctor123` | **Doctor** / Clinician Board | Roster logs, doctor patient counts, card files, and ward booking utilisation charts. |
-| **`analyst`** | `analyst123` | **Analyst** / Data Platform | Bronze/Silver/Gold analytics, ready-to-run PySpark templates, and interactive SQL testing sandbox. |
-| **`finance`** | `finance123` | **Finance** / Chief Auditor | Insurer claim payouts charts, CFO transactional registers, and billing segment summaries.|
-
----
-
-## 🐳 Running Under Docker & Local Setup
-
-### Prerequisite Environment
-- Docker and Docker Compose installed.
-
-### Quick Start Inbound Commands:
-To build and run the entire suite in a micro-container, execute:
-
-```bash
-# 1. Boot up the PulseStream container group
-docker compose up --build -d
-
-# 2. Verify container logs are active
-docker compose logs -f
-
-# 3. Check application wellness probe
-curl http://localhost:3000/health
+```text
+Patient
+   ↓
+Login / Registration
+   ↓
+Language Selection + Consent
+   ↓
+Conversational Clinical Interview
+   ↓
+Voice / Touch / Text
+   ↓
+Medical Document Upload
+   ↓
+OCR + Information Extraction
+   ↓
+AI Clinical Summary
+   ↓
+Patient Verification
+   ↓
+Doctor Review & Editing
+   ↓
+Verified Clinical History
 ```
 
-Now, navigate to **`http://localhost:3000`** in any web browser to access the active management console.
+### 3. Main Modules
 
----
+#### 👤 Patient Module
 
-## 📊 Medallion Table Schemas & Lake Exporters
+* Patient registration/login
+* Patient dashboard
+* Language selection
+* Consent
+* Clinical history collection
+* Voice interaction
+* Touch-based questions
+* Medical document upload
+* AI clinical summary
+* Patient verification
+* Consultation history
+* Alerts
+* Accessibility settings
 
-PulseStream exposes direct, high-performance CSV and JSON endpoints suitable for `spark.read` imports or cron ingestion workers:
+#### 👨‍⚕️ Doctor Module
 
-| Inbound Stream | Target Schema Fields | Excel/CSV Ingress URL | JSON Raw Stream URL |
-| :--- | :--- | :--- | :--- |
-| **Patients** | `id`, `name`, `age`, `gender`, `bloodGroup`, `city`, `state`, `registrationDate`, `insuranceProvider`, `category` | `/api/export/csv/patients` | `/api/export/json/patients` |
-| **Appointments** | `id`, `patientId`, `doctorId`, `department`, `appointmentDate`, `duration`, `status`, `revenueGenerated` | `/api/export/csv/appointments` | `/api/export/json/appointments` |
-| **Doctors** | `id`, `name`, `department`, `experience`, `consultationFee`, `utilization` | `/api/export/csv/doctors` | `/api/export/json/doctors` |
-| **Transactions** | `id`, `patientId`, `appointmentId`, `date`, `amount`, `type`, `insuranceCoverage`, `paymentType`, `department` | `/api/export/csv/transactions` | `/api/export/json/transactions` |
+* Doctor login
+* Dashboard
+* Patient queue
+* Patient history
+* AI-generated summary
+* Medical documents
+* Red-flag alerts
+* Edit/verify clinical summary
+* Consultation management
+* Analytics
 
----
+### 4. AI Module
 
-## 🧱 Real Databricks PySpark Loaders
-
-Copy and paste this production-ready PySpark script into a Databricks Notebook to stream and backfill raw CSV tuples directly into your **Delta Lake Bronze Layer**:
-
-```python
-# Create automated ingestion wrapper for PulseStream lakes
-ingress_base_url = "http://YOUR_DEPLOYED_CONTAINER_IP:3000/api/export/csv/"
-tables = ["patients", "appointments", "doctors", "transactions"]
-
-for table in tables:
-    # Read live csv stream
-    raw_df = spark.read \
-        .format("csv") \
-        .option("header", "true") \
-        .option("inferSchema", "true") \
-        .load(f"{ingress_base_url}{table}")
-        
-    # Append load into Databricks Delta Lakehouses (Bronze Stage)
-    raw_df.write \
-        .format("delta") \
-        .mode("append") \
-        .save(f"/mnt/pulse_healthcare/bronze/{table}")
-
-print("✅ Inbound Delta Append-Batch Execution Complete.")
+```text
+Patient Responses
+       +
+Medical Documents
+       ↓
+   AI Processing
+       ↓
+Structured Clinical History
+       ↓
+Red Flag Identification
+       ↓
+Doctor Review
 ```
 
----
+**Important:** AI assists with collecting, organizing, and summarizing information. It does **not autonomously diagnose the patient**.
 
-## 🛡️ Observability and Prometheus Integration
+### 5. Key Features
 
-The platform includes active standard metrics exporting endpoint at **`/metrics`** to integrate with downstream Prometheus scrapers and Grafana.
+| Feature             | Purpose                                     |
+| ------------------- | ------------------------------------------- |
+| 🎤 Voice Interview  | Easier history collection                   |
+| 👆 Touch Questions  | Simple patient interaction                  |
+| 🌐 Multilingual UI  | Reduce language barriers                    |
+| 📄 Document Upload  | Digitize existing medical records           |
+| 🔍 OCR              | Extract information from documents          |
+| 🤖 AI Summary       | Convert information into structured history |
+| 🚨 Red Flags        | Highlight potentially important information |
+| 👨‍⚕️ Doctor Review | Human verification of AI output             |
+| ♿ Accessibility     | Support different patient needs             |
+| 📅 Timeline         | Organize medical history chronologically    |
 
-Try loading the raw telemetry data:
-```bash
-curl http://localhost:3000/metrics
+### 6. Technology Stack
+
+```text
+Frontend
+React + TypeScript + Vite + Tailwind CSS
+
+Backend
+Node.js + Express
+
+Database
+PostgreSQL
+
+AI
+AI Clinical Summarization
+OCR / Clinical Information Extraction
+
+Infrastructure
+Docker + Docker Compose
 ```
+
+### 7.Core Architecture
+
+```text
+                MEDIKIOSK
+                    │
+        ┌───────────┴───────────┐
+        │                       │
+     PATIENT                  DOCTOR
+        │                       │
+        ▼                       ▼
+ Patient Dashboard        Doctor Dashboard
+        │                       │
+        ▼                       │
+ Clinical Interview             │
+ Voice / Touch / Text           │
+        │                       │
+        ▼                       │
+ Medical Documents              │
+        │                       │
+        └──────────┬────────────┘
+                   ▼
+             AI PROCESSING
+                   │
+          ┌────────┴────────┐
+          ▼                 ▼
+   Clinical Summary    Red Flags
+          │                 │
+          └────────┬────────┘
+                   ▼
+             Doctor Review
+                   │
+                   ▼
+        Verified Clinical History
+```
+
+### 8. Expected Impact
+
+MediKiosk aims to:
+
+* **Reduce** time spent collecting patient history
+* **Improve** completeness of clinical information
+* **Assist** doctors before consultation
+* **Improve** accessibility for patients
+* **Organize** scattered medical records
+* **Highlight** potentially important information
+* **Create** a structured digital patient history
+
+### 9. Future Scope
+
+* ABDM/ABHA integration
+* More Indian regional languages
+* Advanced OCR
+* Hospital/clinic integration
+* Secure consent management
+* Interoperability with healthcare systems
+* Sign-language assistance
+* Mobile application
+* Offline/low-connectivity support
+
