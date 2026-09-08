@@ -175,3 +175,77 @@ MediKiosk aims to:
 * Mobile application
 * Offline/low-connectivity support
 
+
+
+
+
+````markdown
+## 🚀 How to Run
+
+### Prerequisites
+- Node.js 18+
+- npm
+- Docker Desktop
+- Git
+- WSL 2 (Windows)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Rajkumar9mak/MediKiosk-.git
+cd MediKiosk-
+````
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+PORT=3000
+PGHOST=host.docker.internal
+PGPORT=5432
+PGDATABASE=healthcare
+PGUSER=postgres
+PGPASSWORD=your_postgres_password
+PGSSL=false
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+### 4. Start the Application
+
+Make sure Docker Desktop is running, then:
+
+```bash
+docker compose up --build -d
+```
+
+### 5. Check Status
+
+```bash
+docker compose ps
+```
+
+### 6. Open the Application
+
+Visit:
+
+```text
+http://localhost:3000
+```
+
+### 🛑 Stop the Application
+
+```bash
+docker compose down
+```
+
+
+```
+
+```
